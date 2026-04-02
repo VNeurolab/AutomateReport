@@ -15,7 +15,7 @@ The user has NOT provided their actual content yet. Everything below marked with
 ## Architecture
 
 ```
-Google Forms → Export CSV → Python script → PDF reports + Excel summary
+Google Forms → Export CSV → Python script → PDF reports + Excel summary → Push to GitHub
 ```
 
 ### Files
@@ -30,6 +30,7 @@ Google Forms → Export CSV → Python script → PDF reports + Excel summary
 | `excel_generator.py` | Generates Excel summary spreadsheet using pandas + openpyxl |
 | `requirements.txt` | Python dependencies: pandas, openpyxl, reportlab |
 | `sample_data/sample_responses.csv` | Sample CSV for testing |
+| `sample_output/` | Demo PDFs + Excel pushed to repo so user can download from GitHub |
 
 ### How It Works
 
@@ -61,16 +62,28 @@ When the user is ready to customize, they need to provide:
 - [ ] **E. Descriptive wording** — paragraphs for each score range per dimension (5 ranges x N dimensions)
 - [ ] **F. Report design** — colors, logo, layout preferences, or a PPT/PDF template to match
 - [ ] **G. Response data** — actual CSV exported from Google Forms
+- [ ] **H. Overall Insights text** — either user-provided per type combo, or Claude pre-generates all combinations during development
 
 They can provide these in any format: Excel, Word, PDF, PPT, or typed in chat.
+
+## Deployment & Output Expectations
+
+- **Expected batch size: ~127 respondents** per run
+- **Output delivery: push generated PDFs to GitHub repo** for user to download (do NOT rely on showing PDFs in chat — user cannot see them visually)
+- **PDF generation capacity:** 127 reports is well within limits, runs in under a minute
+- **Report assets supported:** polarity bars, pie charts, bar charts, radar/spider charts, logos/images, tables, multi-page layouts, custom fonts (.ttf)
+- **"Overall Insights" or AI-written sections:** pre-generate all possible texts during development and bake into the system — no AI runs at report generation time. Two approaches:
+  - Option A: User provides wording for each type combination
+  - Option B: Claude pre-writes all possible insight texts, user reviews/approves
+- **Design iteration is the main effort** — once the template is finalized, generating N copies is trivial
 
 ## User Context
 
 - The user is a complete beginner with no coding experience
 - They do not know how to use GitHub, Python, or terminal commands
 - All technical work should be done by Claude — the user just provides content and reviews output
-- The user can see PDF previews directly in the Claude Code chat
+- The user CANNOT see PDF previews in chat — always push PDFs to GitHub repo for download
 - The current MBTI-like questionnaire is a demo — expect it to be fully replaced
 - Output formats: PDF reports (individual) + Excel summary (batch)
 - Input source: Google Forms → exported as CSV
-- Processing: batch (many respondents at once)
+- Processing: batch (~127 respondents at once)
